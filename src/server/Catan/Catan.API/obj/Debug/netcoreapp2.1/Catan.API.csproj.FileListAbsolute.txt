@@ -1,0 +1,14 @@
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\bin\Debug\netcoreapp2.1\Catan.API.deps.json
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\bin\Debug\netcoreapp2.1\Catan.API.runtimeconfig.json
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\bin\Debug\netcoreapp2.1\Catan.API.runtimeconfig.dev.json
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\bin\Debug\netcoreapp2.1\Catan.API.dll
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\bin\Debug\netcoreapp2.1\Catan.API.pdb
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\obj\Debug\netcoreapp2.1\Catan.API.csprojAssemblyReference.cache
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\obj\Debug\netcoreapp2.1\Catan.API.csproj.CoreCompileInputs.cache
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\obj\Debug\netcoreapp2.1\Catan.API.RazorAssemblyInfo.cache
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\obj\Debug\netcoreapp2.1\Catan.API.RazorAssemblyInfo.cs
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\obj\Debug\netcoreapp2.1\Catan.API.AssemblyInfoInputs.cache
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\obj\Debug\netcoreapp2.1\Catan.API.AssemblyInfo.cs
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\obj\Debug\netcoreapp2.1\Catan.API.RazorTargetAssemblyInfo.cache
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\obj\Debug\netcoreapp2.1\Catan.API.dll
+D:\Users\Bart\Documents\GitHub\Catan\src\server\Catan\Catan.API\obj\Debug\netcoreapp2.1\Catan.API.pdb
