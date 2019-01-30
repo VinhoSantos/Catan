@@ -25,6 +25,10 @@ export default class Render {
         return Render.instance;
     }
 
+    public clearGrid() {
+        this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+
     public drawLoadingScreen() {
         this.drawText('Connecting to Catan server ...');
     }
