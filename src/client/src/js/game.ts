@@ -33,6 +33,7 @@ export default class Game {
         this.connection.start()
             .then(() => {
                 console.log('Connected to hub');
+                this.render.drawTitleScreen();
             })
             .catch((err: any) => {
                 console.log('Connection failed');

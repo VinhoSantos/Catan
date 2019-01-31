@@ -30,7 +30,13 @@ export default class Render {
     }
 
     public drawLoadingScreen() {
+        this.clearGrid();
         this.drawText('Connecting to Catan server ...');
+    }
+
+    public drawTitleScreen() {        
+        this.clearGrid();
+        this.drawText('Welcome to Catan!');
     }
 
     private drawText(text: string) {
