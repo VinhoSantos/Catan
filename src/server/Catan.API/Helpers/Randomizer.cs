@@ -32,11 +32,11 @@ namespace Catan.API.Helpers
             return resourceTypes;
         }
 
-        public static int ThrowDice()
+        public static int ThrowDices()
         {
             var random = new Random();
-            var dice1 = random.Next(7);
-            var dice2 = random.Next(7);
+            var dice1 = random.Next(1, 7);
+            var dice2 = random.Next(1, 7);
 
             return dice1 + dice2;
         }

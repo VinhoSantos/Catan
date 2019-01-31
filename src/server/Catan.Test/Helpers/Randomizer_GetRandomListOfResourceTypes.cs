@@ -2,6 +2,7 @@ using Catan.API.Helpers;
 using Catan.API.Models;
 using Catan.API.Models.Enums;
 using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -64,6 +65,20 @@ namespace Catan.Test.Helpers
             resourceTypes.Where(r => r == ResourceType.Wool).Should().HaveCount(sumOfAllWool);
             resourceTypes.Where(r => r == ResourceType.Wheat).Should().HaveCount(sumOfAllWheat);
             resourceTypes.Where(r => r == ResourceType.Ore).Should().HaveCount(sumOfAllOre);
+        }
+    }
+
+    public class Randomizer_ThrowDices
+    {
+        [Fact]
+        public void It_returns_a_number_between_1_and_12()
+        {
+            for (var i = 0; i < 1000; i++)
+            {
+                var eyes = Randomizer.ThrowDices();
+                Console.WriteLine(eyes);
+                eyes.Should().BeGreaterOrEqualTo(1).And.BeLessOrEqualTo(12);
+            }
         }
     }
 }
