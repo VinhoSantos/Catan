@@ -6,7 +6,7 @@ namespace Catan.API.Models
     public class GameState
     {
         public List<Player> Players { get; set; }
-        public List<Tile> Board { get; set; }
+        public Board Board { get; set; }
     }
 
     public class Tile
