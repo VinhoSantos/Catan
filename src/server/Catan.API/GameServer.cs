@@ -7,17 +7,16 @@ namespace Catan.API
     public class GameServer
     {
         private static GameServer _instance;
-        private static readonly object padLock = new object();
+        private static readonly object PadLock = new object();
 
         public ConcurrentDictionary<string, Player> ConnectedPlayers { get; set; }
-        public GameState GameState { get; set; }
-        public Rules Rules { get; set; }
+        public List<Game> Games { get; set; }
 
         public static GameServer Instance
         {
             get
             {
-                lock (padLock)
+                lock (PadLock)
                 {
                     return _instance ?? (_instance = new GameServer());
                 }
@@ -27,13 +26,7 @@ namespace Catan.API
         public void Initialize()
         {
             ConnectedPlayers = new ConcurrentDictionary<string, Player>();
-            Rules = new BasicRules();
-
-            GameState = new GameState
-            {
-                Board = new Board(Rules),
-                Players = new List<Player>()
-            };
+            Games = new List<Game>();
         }
     }
 }

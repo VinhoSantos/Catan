@@ -8,7 +8,7 @@ namespace Catan.API.Helpers
 {
     public static class Randomizer
     {
-        public static List<ResourceType> GetRandomListOfResourceTypes(List<Resource> resources)
+        public static List<ResourceType> GetRandomListOfResourceTypes(List<ResourceRuleSet> resources)
         {
             var resourceTypes = new List<ResourceType>();
             var resourcesTypesToChooseFrom = new List<ResourceType>();
@@ -17,7 +17,7 @@ namespace Catan.API.Helpers
             {
                 for (var i = 0; i < resource.Amount; i++)
                 {
-                    resourcesTypesToChooseFrom.Add(resource.ResourceType);
+                    resourcesTypesToChooseFrom.Add(resource.Type);
                 }
             }
 
@@ -30,6 +30,30 @@ namespace Catan.API.Helpers
             }
 
             return resourceTypes;
+        }
+
+        public static List<int> GetRandomListOfNumbers(List<NumberRuleSet> numberRuleSet)
+        {
+            var numbers = new List<int>();
+            var numbersToChooseFrom = new List<int>();
+
+            foreach (var numberSet in numberRuleSet)
+            {
+                for (var i = 0; i < numberSet.Amount; i++)
+                {
+                    numbersToChooseFrom.Add(numberSet.Number);
+                }
+            }
+
+            while (numbersToChooseFrom.Count > 0)
+            {
+                var randomIndex = new Random().Next(numbersToChooseFrom.Count);
+
+                numbers.Add(numbersToChooseFrom.ElementAt(randomIndex));
+                numbersToChooseFrom.RemoveAt(randomIndex);
+            }
+
+            return numbers;
         }
 
         public static int ThrowDices()

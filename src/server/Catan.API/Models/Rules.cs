@@ -1,16 +1,27 @@
 ﻿using Catan.API.Models.Enums;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Catan.API.Models
 {
     public abstract class Rules
     {
-        public List<Resource> Resources { get; set; }
-        public List<NumberSet> NumberSets { get; set; }
-        public List<Port> Ports { get; set; }
         public int MinPlayers { get; set; }
         public int MaxPlayers { get; set; }
-        public List<Construction> Constructions { get; set; }
+        public int PointsToWin { get; set; }
+        public List<ResourceRuleSet> Resources { get; set; }
+        public List<NumberRuleSet> NumberSets { get; set; }
+        public List<PortRuleSet> Ports { get; set; }
+        public List<ConstructionRuleSet> Constructions { get; set; }
+        public List<DevelopmentCardRuleSet> DevelopmentCards { get; set; }
+        public List<EffectCardRuleSet> EffectCards { get; set; }
+    }
+
+    public class EffectCardRuleSet
+    {
+        public string Name { get; set; }
+        public int ExtraPoints { get; set; }
     }
 
     public class BasicRules : Rules
@@ -19,244 +30,305 @@ namespace Catan.API.Models
         {
             MinPlayers = 3;
             MaxPlayers = 4;
+            PointsToWin = 10;
 
-            Resources = new List<Resource>
+            Resources = new List<ResourceRuleSet>
             {
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Dessert,
+                    Type = ResourceType.Dessert,
+                    Color = "#c2b280",
                     Amount = 1
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Wood,
+                    Type = ResourceType.Wood,
+                    Color = "#228B22",
                     Amount = 4
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Brick,
+                    Type = ResourceType.Brick,
+                    Color = "#dc5539",
                     Amount = 3
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Wool,
+                    Type = ResourceType.Wool,
+                    Color = "#e1e0d8",
                     Amount = 4
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Wheat,
+                    Type = ResourceType.Wheat,
+                    Color = "#f5deb3",
                     Amount = 4
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Ore,
+                    Type = ResourceType.Ore,
+                    Color = "#999999",
                     Amount = 3
                 }
             };
 
-            NumberSets = new List<NumberSet>
+            NumberSets = new List<NumberRuleSet>
             {
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 2,
                     Amount = 1
                 },
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 3,
                     Amount = 2
                 },
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 4,
                     Amount = 2
                 },
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 5,
                     Amount = 2
                 },
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 6,
                     Amount = 2
                 },
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 8,
                     Amount = 2
                 },
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 9,
                     Amount = 2
                 },
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 10,
                     Amount = 2
                 },
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 11,
                     Amount = 2
                 },
-                new NumberSet
+                new NumberRuleSet
                 {
                     Number = 12,
                     Amount = 1
                 }
             };
 
-            Ports = new List<Port>
+            Ports = new List<PortRuleSet>
             {
-                new Port
+                new PortRuleSet
                 {
-                    Type = PortType.ThreeToOne
+                    Name = "3/1",
+                    Pay = 3,
+                    Receive = 1,
+                    Amount = 4
                 },
-                new Port
+                new PortRuleSet
                 {
-                    Type = PortType.ThreeToOne
+                    Name = "2/1 Wood",
+                    Pay = 2,
+                    Receive = 1,
+                    Amount = 2
                 },
-                new Port
+                new PortRuleSet
                 {
-                    Type = PortType.ThreeToOne
+                    Name = "2/1 Steen",
+                    Pay = 2,
+                    Receive = 1,
+                    Amount = 2
                 },
-                new Port
+                new PortRuleSet
                 {
-                    Type = PortType.ThreeToOne
+                    Name = "2/1 Wool",
+                    Pay = 2,
+                    Receive = 1,
+                    Amount = 2
                 },
-                new Port
+                new PortRuleSet
                 {
-                    Type = PortType.TwoToOneWood
+                    Name = "2/1 Wheat",
+                    Pay = 2,
+                    Receive = 1,
+                    Amount = 2
                 },
-                new Port
+                new PortRuleSet
                 {
-                    Type = PortType.TwoToOneBrick
-                },
-                new Port
-                {
-                    Type = PortType.TwoToOneWool
-                },
-                new Port
-                {
-                    Type = PortType.TwoToOneWheat
-                },
-                new Port
-                {
-                    Type = PortType.TwoToOneOre
+                    Name = "2/1 Ore",
+                    Pay = 2,
+                    Receive = 1,
+                    Amount = 2
                 }
             };
 
-            Constructions = new List<Construction>
+            Constructions = new List<ConstructionRuleSet>
             {
-                new Construction
+                new ConstructionRuleSet
                 {
                     Type = ConstructionType.Street,
-                    Recources = new List<Resource>
+                    Cost = new List<ResourceRuleSet>
                     {
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Wood,
+                            Type = ResourceType.Wood,
                             Amount = 1
                         },
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Brick,
+                            Type = ResourceType.Brick,
                             Amount = 1
                         }
                     }
                 },
-                new Construction
+                new ConstructionRuleSet
                 {
                     Type = ConstructionType.Village,
-                    Recources = new List<Resource>
+                    Cost = new List<ResourceRuleSet>
                     {
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Wood,
+                            Type = ResourceType.Wood,
                             Amount = 1
                         },
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Brick,
+                            Type = ResourceType.Brick,
                             Amount = 1
                         },
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Wheat,
+                            Type = ResourceType.Wheat,
                             Amount = 1
                         },
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Wool,
+                            Type = ResourceType.Wool,
                             Amount = 1
                         }
                     }
                 },
-                new Construction
+                new ConstructionRuleSet
                 {
                     Type = ConstructionType.Village,
-                    Recources = new List<Resource>
+                    Cost = new List<ResourceRuleSet>
                     {
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Wheat,
+                            Type = ResourceType.Wheat,
                             Amount = 2
                         },
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Ore,
+                            Type = ResourceType.Ore,
                             Amount = 3
                         }
                     }
                 },
-                new Construction
+                new ConstructionRuleSet
                 {
                     Type = ConstructionType.DevelopmentCard,
-                    Recources = new List<Resource>
+                    Cost = new List<ResourceRuleSet>
                     {
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Wheat,
+                            Type = ResourceType.Wheat,
                             Amount = 1
                         },
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Ore,
+                            Type = ResourceType.Ore,
                             Amount = 1
                         },
-                        new Resource
+                        new ResourceRuleSet
                         {
-                            ResourceType = ResourceType.Wool,
+                            Type = ResourceType.Wool,
                             Amount = 1
                         }
                     }
                 }
             };
+
+            DevelopmentCards = new List<DevelopmentCardRuleSet>
+            {
+                new DevelopmentCardRuleSet
+                {
+                    Type = DevelopmentCardType.Knight,
+                    Amount = 14
+                },
+                new DevelopmentCardRuleSet
+                {
+                    Type = DevelopmentCardType.VictoryPoint,
+                    Amount = 5
+                },
+                new DevelopmentCardRuleSet
+                {
+                    Type = DevelopmentCardType.Streets,
+                    Amount = 2
+                },
+                new DevelopmentCardRuleSet
+                {
+                    Type = DevelopmentCardType.Resources,
+                    Amount = 2
+                },
+                new DevelopmentCardRuleSet
+                {
+                    Type = DevelopmentCardType.Monopoly,
+                    Amount = 2
+                }
+            };
+
+            Validate();
+        }
+
+        private void Validate()
+        {
+            if (Resources.Where(r => r.Type != ResourceType.Dessert).Sum(r => r.Amount) != NumberSets.Sum(n => n.Amount))
+                throw new ArgumentException("Rules unvalid: The amount of resources must match the amount of numbers");
         }
     }
 
-    public class Construction
+    public class ConstructionRuleSet
     {
         public ConstructionType Type { get; set; }
-        public List<Resource> Recources { get; set; }
+        public List<ResourceRuleSet> Cost { get; set; }
     }
 
-    public class Port
+    public class PortRuleSet
     {
-        public PortType Type { get; set; }
+        public string Name { get; set; }
+        public ResourceType? ResourceType { get; set; }
+        public int Receive { get; set; }
+        public int Pay { get; set; }
+        public int Amount { get; set; }
     }
 
-    public class NumberSet
+    public class NumberRuleSet
     {
         public int Number { get; set; }
         public int Amount { get; set; }
     }
 
-    public class Resource
+    public class ResourceRuleSet
     {
-        public ResourceType ResourceType { get; set; }
+        public ResourceType Type { get; set; }
+        public string Color { get; set; }
+        public int Amount { get; set; }
+    }
+
+    public class DevelopmentCardRuleSet
+    {
+        public DevelopmentCardType Type { get; set; }
         public int Amount { get; set; }
     }
 }
