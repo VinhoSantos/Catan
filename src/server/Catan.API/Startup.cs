@@ -21,11 +21,10 @@ namespace Catan.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opts =>
-                {
-                    opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                });
+                    opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+
             services.AddSignalR();
             services.AddCors();
         }
@@ -43,7 +42,8 @@ namespace Catan.API
             }
 
             app.UseCors(builder => builder
-                .AllowAnyOrigin()
+                //.AllowAnyOrigin() //works in .net core 2.1 but not in 2.2
+                .WithOrigins("http://localhost:8080") //from .net core 2.2 onwards
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
