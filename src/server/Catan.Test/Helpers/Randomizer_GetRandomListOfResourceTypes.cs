@@ -13,36 +13,36 @@ namespace Catan.Test.Helpers
         [Fact]
         public void It_returns_a_correct_list_of_resourceTypes()
         {
-            var resources = new List<Resource>
+            var resources = new List<ResourceRuleSet>
             {
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Dessert,
+                    Type = ResourceType.Dessert,
                     Amount = 1
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Wood,
+                    Type = ResourceType.Wood,
                     Amount = 4
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Brick,
+                    Type = ResourceType.Brick,
                     Amount = 3
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Wool,
+                    Type = ResourceType.Wool,
                     Amount = 4
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Wheat,
+                    Type = ResourceType.Wheat,
                     Amount = 4
                 },
-                new Resource
+                new ResourceRuleSet
                 {
-                    ResourceType = ResourceType.Ore,
+                    Type = ResourceType.Ore,
                     Amount = 3
                 }
             };
@@ -50,12 +50,12 @@ namespace Catan.Test.Helpers
             var resourceTypes = Randomizer.GetRandomListOfResourceTypes(resources);
 
             var sumOfAllResourceAmounts = resources.Sum(r => r.Amount);
-            var sumOfAllDessert = resources.Where(r => r.ResourceType == ResourceType.Dessert).Sum(r => r.Amount);
-            var sumOfAllWood = resources.Where(r => r.ResourceType == ResourceType.Wood).Sum(r => r.Amount);
-            var sumOfAllBrick = resources.Where(r => r.ResourceType == ResourceType.Brick).Sum(r => r.Amount);
-            var sumOfAllWool = resources.Where(r => r.ResourceType == ResourceType.Wool).Sum(r => r.Amount);
-            var sumOfAllWheat = resources.Where(r => r.ResourceType == ResourceType.Wheat).Sum(r => r.Amount);
-            var sumOfAllOre = resources.Where(r => r.ResourceType == ResourceType.Ore).Sum(r => r.Amount);
+            var sumOfAllDessert = resources.Where(r => r.Type == ResourceType.Dessert).Sum(r => r.Amount);
+            var sumOfAllWood = resources.Where(r => r.Type == ResourceType.Wood).Sum(r => r.Amount);
+            var sumOfAllBrick = resources.Where(r => r.Type == ResourceType.Brick).Sum(r => r.Amount);
+            var sumOfAllWool = resources.Where(r => r.Type == ResourceType.Wool).Sum(r => r.Amount);
+            var sumOfAllWheat = resources.Where(r => r.Type == ResourceType.Wheat).Sum(r => r.Amount);
+            var sumOfAllOre = resources.Where(r => r.Type == ResourceType.Ore).Sum(r => r.Amount);
 
             resourceTypes.Should().HaveCount(sumOfAllResourceAmounts);
             resourceTypes.Where(r => r == ResourceType.Dessert).Should().HaveCount(sumOfAllDessert);

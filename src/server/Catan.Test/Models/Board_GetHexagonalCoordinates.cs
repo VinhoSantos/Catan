@@ -1,6 +1,5 @@
 ﻿using Catan.API.Models;
 using FluentAssertions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -28,28 +27,28 @@ namespace Catan.Test.Helpers
             CheckCoordinates(coordinates, depth);
         }
 
-        private void CheckCoordinates(List<Tuple<int, int, int>> coordinates, int depth)
+        private void CheckCoordinates(List<(int Q, int R, int S)> coordinates, int depth)
         {
-            coordinates.Any(co => co.Item1 < -depth).Should().BeFalse();
-            coordinates.Any(co => co.Item1 > depth).Should().BeFalse();
-            coordinates.Any(co => co.Item2 < -depth).Should().BeFalse();
-            coordinates.Any(co => co.Item2 > depth).Should().BeFalse();
-            coordinates.Any(co => co.Item3 < -depth).Should().BeFalse();
-            coordinates.Any(co => co.Item3 > depth).Should().BeFalse();
+            coordinates.Any(co => co.Q < -depth).Should().BeFalse();
+            coordinates.Any(co => co.Q > depth).Should().BeFalse();
+            coordinates.Any(co => co.R < -depth).Should().BeFalse();
+            coordinates.Any(co => co.R > depth).Should().BeFalse();
+            coordinates.Any(co => co.S < -depth).Should().BeFalse();
+            coordinates.Any(co => co.S > depth).Should().BeFalse();
 
-            coordinates.All(co => co.Item1 >= -depth && co.Item1 <= depth).Should().BeTrue();
-            coordinates.All(co => co.Item1 >= -depth && co.Item1 <= depth).Should().BeTrue();
-            coordinates.All(co => co.Item2 >= -depth && co.Item1 <= depth).Should().BeTrue();
-            coordinates.All(co => co.Item2 >= -depth && co.Item1 <= depth).Should().BeTrue();
-            coordinates.All(co => co.Item3 >= -depth && co.Item1 <= depth).Should().BeTrue();
-            coordinates.All(co => co.Item3 >= -depth && co.Item1 <= depth).Should().BeTrue();
+            coordinates.All(co => co.Q >= -depth && co.Item1 <= depth).Should().BeTrue();
+            coordinates.All(co => co.Q >= -depth && co.Item1 <= depth).Should().BeTrue();
+            coordinates.All(co => co.R >= -depth && co.Item1 <= depth).Should().BeTrue();
+            coordinates.All(co => co.R >= -depth && co.Item1 <= depth).Should().BeTrue();
+            coordinates.All(co => co.S >= -depth && co.Item1 <= depth).Should().BeTrue();
+            coordinates.All(co => co.S >= -depth && co.Item1 <= depth).Should().BeTrue();
 
             coordinates.All(DoesSumEqualsZero).Should().BeTrue();
         }
 
-        private bool DoesSumEqualsZero(Tuple<int, int, int> co)
+        private bool DoesSumEqualsZero((int Q, int R, int S) co)
         {
-            return (co.Item1 + co.Item2 + co.Item3) == 0;
+            return (co.Q + co.R + co.S) == 0;
         }
     }
 }
