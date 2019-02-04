@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-	entry: "./src/js/app.ts",
+	entry: "./src/scripts/app.ts",
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		filename: "bundle.js",
@@ -36,6 +36,13 @@ module.exports = {
 				exclude: /node_modules/,
 				use: [
 					{ loader: "file-loader" }
+				]
+			},
+			{
+				test: /\.(jp(e*)g|png|svg)$/,
+				exclude: /node_modules/,
+				use: [
+					{ loader: "url-loader" }
 				]
 			}
 		]

@@ -11,6 +11,6 @@
 		"node_modules"
 	],
 	"files": [
-		"./src/js/app.ts"
+		"./src/scripts/app.ts"
 	]
 }

@@ -15,4 +15,4 @@ window.onload = () => {
     const app = new App(new Game());
 
     app.init();
-}   
+}
