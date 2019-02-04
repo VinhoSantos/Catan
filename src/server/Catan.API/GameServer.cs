@@ -10,7 +10,7 @@ namespace Catan.API
         private static readonly object PadLock = new object();
 
         public ConcurrentDictionary<string, Player> ConnectedPlayers { get; set; }
-        public List<Game> Games { get; set; }
+        public List<BoardGame> Games { get; set; }
 
         public static GameServer Instance
         {
@@ -26,7 +26,7 @@ namespace Catan.API
         public void Initialize()
         {
             ConnectedPlayers = new ConcurrentDictionary<string, Player>();
-            Games = new List<Game>();
+            Games = new List<BoardGame>();
         }
     }
 }

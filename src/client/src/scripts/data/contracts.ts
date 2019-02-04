@@ -1,3 +1,20 @@
+import { Guid } from './guid';
+
+export module Scripts.Data {
+    'use strict';
+    export class BoardGame {
+        id: Guid;
+        status: Scripts.Data.GameStatus;
+        rules: Scripts.Data.Models.Rules;
+        players: System.Collections.Generic.KeyValuePair[];
+        gameState: Scripts.Data.Models.GameState;
+    }
+    export enum GameStatus {
+        Waiting = 1,
+        Ongoing = 2,
+        Ended = 3,
+    }
+}
 export module Scripts.Data.Libs {
     'use strict';
     export class Hex {
@@ -10,15 +27,6 @@ export module Scripts.Data.Libs {
 }
 export module Scripts.Data.Models {
     'use strict';
-    export class GameState {
-        players: Scripts.Data.Models.Player[];
-        rules: Scripts.Data.Models.Rules;
-        board: Scripts.Data.Models.Board;
-    }
-    export class Player {
-        id: string;
-        name: string;
-    }
     export class Rules {
         minPlayers: number;
         maxPlayers: number;
@@ -57,6 +65,14 @@ export module Scripts.Data.Models {
     export class EffectCardRuleSet {
         name: string;
         extraPoints: number;
+    }
+    export class GameState {
+        players: Scripts.Data.Models.Player[];
+        board: Scripts.Data.Models.Board;
+    }
+    export class Player {
+        id: string;
+        name: string;
     }
     export class Board {
         tiles: Scripts.Data.Models.Tile[];
@@ -103,5 +119,12 @@ export module Scripts.Data.Models.Enums {
         Streets = 3,
         Resources = 4,
         Monopoly = 5,
+    }
+}
+export module System.Collections.Generic {
+    'use strict';
+    export class KeyValuePair {
+        key: string;
+        value: string;
     }
 }

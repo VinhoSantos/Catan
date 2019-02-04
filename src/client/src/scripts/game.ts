@@ -1,6 +1,7 @@
 import * as signalR from '@aspnet/signalr';
 import Render from './renders/render';
 import RenderBackground from './renders/render-background';
+import Loader from './loader';
 import * as contracts from './data/contracts';
 type GameState = contracts.Scripts.Data.Models.GameState;
 type Player = contracts.Scripts.Data.Models.Player;
@@ -9,14 +10,15 @@ export default class Game {
     
     private renderBackground: RenderBackground;
     private render: Render;
+    private loader: Loader;
     private server = 'http://localhost:52257';
     private connection: signalR.HubConnection;
-    private gameState: GameState;
     private player: Player;
 
     constructor() {
         this.renderBackground = RenderBackground.getInstance();
         this.render = Render.getInstance();
+        this.loader = new Loader();
     }
 
     public start() {
@@ -29,7 +31,7 @@ export default class Game {
     }
 
     private drawLoadingScreen(): void {
-        this.render.drawLoadingScreen();
+        this.loader.write('Loading Catan');
     }
 
     private setupConnection() {

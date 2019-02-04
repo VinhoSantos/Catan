@@ -31,7 +31,9 @@ namespace Catan.API.Hubs
             Thread.Sleep(1000);
 
             Clients.Caller.SendAsync("IsConnected", player);
-            return Clients.Others.SendAsync("PlayerConnected", player);
+            Clients.Others.SendAsync("PlayerConnected", player);
+
+            return Clients.AllExcept(_gameServer.Games.SelectMany(g => g.Players.Keys).ToList()).SendAsync("UpdateAvailableGames", _gameServer.Games);
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
@@ -41,18 +43,19 @@ namespace Catan.API.Hubs
 
             return Clients.All.SendAsync("PlayerDisconnected", player);
         }
-
+        
         public async Task OnCreateGame(string playerId)
         {
             if (_gameServer.Games.Any(g => g.GameState.Players.Any(p => p.Id == playerId)))
                 throw new ArgumentException("Player is still active in other game");
 
-            var game = new Game();
+            var game = new BoardGame();
             _gameServer.Games.Add(game);
 
             await Groups.AddToGroupAsync(playerId, game.Id.ToString());
 
             Clients.Caller.SendAsync("GameCreated", game);
+            Clients.GroupExcept(game.Id.ToString(), playerId).SendAsync("PlayerCreatedGame");
         }
 
         public async Task OnJoinGame(string playerId, Guid gameId)
@@ -61,25 +64,20 @@ namespace Catan.API.Hubs
                 throw new ArgumentException("Player is still active in other game");
 
             var game = _gameServer.Games.Find(g => g.Id == gameId);
-            game.GameState.Players.Add(_gameServer.ConnectedPlayers[playerId]);
+            game.Players.Add(playerId, _gameServer.ConnectedPlayers[playerId].Name);
 
             await Groups.AddToGroupAsync(playerId, gameId.ToString());
 
             Clients.Caller.SendAsync("GameJoined", game);
             Clients.GroupExcept(game.Id.ToString(), playerId).SendAsync("PlayerJoinedGame");
+
+            if (game.Players.Count == game.Rules.MaxPlayers)
+                StartGame(game);
         }
 
-        public async Task OnStartGame(string playerId)
+        private async void StartGame(BoardGame boardGame)
         {
-            if (_gameServer.Games.Any(g => g.GameState.Players.Any(p => p.Id == playerId)))
-                throw new ArgumentException("Player is still active in other game");
-
-            var game = new Game();
-            _gameServer.Games.Add(game);
-            
-            await Groups.AddToGroupAsync(playerId, game.Id.ToString());
-
-            Clients.Group(game.Id.ToString()).SendAsync("GameStarted", game);
+            boardGame.Start();
         }
     }
 }

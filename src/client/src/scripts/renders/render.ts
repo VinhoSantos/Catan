@@ -16,7 +16,7 @@ export default class Render {
 
     private textColor = '#333';
 
-    private fieldColors = ['#c2b280', '#228B22', '#dc5539', '#e1e0d8', '#f5deb3', '#999'];
+    private fieldColors = ['#e2cb81', '#228B22', '#dc5539', '#6cf45a', '#fe5', '#bbb'];
 
     constructor() { }
 
@@ -53,11 +53,6 @@ export default class Render {
 
     public clearScreen() {
         this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    }
-
-    public drawLoadingScreen() {
-        this.clearScreen();
-        this.drawText('Connecting to Catan server ...');
     }
 
     public drawBoard() {       

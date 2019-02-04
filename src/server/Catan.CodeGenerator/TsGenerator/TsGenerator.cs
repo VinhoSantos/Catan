@@ -19,7 +19,7 @@ namespace Catan.CodeGenerator.TsGenerator
             }
 
             var result = new StringBuilder();
-            //result.Append("import { Guid } from './guid';\r\n");
+            result.Append("import { Guid } from './guid';\r\n");
             settings.WriteModules(result, modules.Values);
             return result.ToString();
         }
