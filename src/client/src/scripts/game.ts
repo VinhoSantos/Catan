@@ -1,24 +1,24 @@
 import * as signalR from '@aspnet/signalr';
-import Render from './renders/render';
+import RenderCanvas from './renders/render-canvas';
 import RenderBackground from './renders/render-background';
-import Loader from './loader';
+import RenderDom from './renders/render-dom';
 import * as contracts from './data/contracts';
 type GameState = contracts.Scripts.Data.Models.GameState;
 type Player = contracts.Scripts.Data.Models.Player;
 
 export default class Game {
     
-    private renderBackground: RenderBackground;
-    private render: Render;
-    private loader: Loader;
+    private background: RenderBackground;
+    private canvas: RenderCanvas;
+    private loader: RenderDom;
     private server = 'http://localhost:52257';
     private connection: signalR.HubConnection;
     private player: Player;
 
     constructor() {
-        this.renderBackground = RenderBackground.getInstance();
-        this.render = Render.getInstance();
-        this.loader = new Loader();
+        this.background = RenderBackground.getInstance();
+        this.canvas = RenderCanvas.getInstance();
+        this.loader = new RenderDom('#loader');
     }
 
     public start() {
@@ -26,12 +26,9 @@ export default class Game {
         this.setupConnection();
     }
 
-    private drawBackground(): any {
-        this.renderBackground.drawBackground();
-    }
-
     private drawLoadingScreen(): void {
-        this.loader.write('Loading Catan');
+        this.loader.write('Loading Catan...');
+        this.loader.show();
     }
 
     private setupConnection() {
@@ -47,6 +44,9 @@ export default class Game {
         this.connection.start()
             .then(() => {
                 console.log('Connected to hub');
+                this.background.draw();
+                this.canvas.drawBoard();
+                this.loader.hide();
             })
             .catch((err: any) => {
                 console.log('Connection failed');
@@ -94,9 +94,9 @@ export default class Game {
     }
 
     private windowResize(): any {
-        this.renderBackground.recalculateMeasurements();
-        this.renderBackground.drawBackground();
-        this.render.recalculateMeasurements();
-        this.render.drawBoard();
+        this.background.recalculateMeasurements();
+        this.background.draw();
+        this.canvas.recalculateMeasurements();
+        this.canvas.drawBoard();
     }
 }

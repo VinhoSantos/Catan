@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
 	entry: "./src/scripts/app.ts",
@@ -22,14 +23,20 @@ module.exports = {
 					{ loader: "ts-loader" }
 				]
 			},
-            {
+			{
 				test: /\.(s*)css$/,
 				exclude: /node_modules/,
-				use: [
-					"style-loader",
-                    "css-loader",
-                    "sass-loader"
-				]
+				use: [{
+					//loader: 'style-loader', // inject CSS to page
+					loader: MiniCssExtractPlugin.loader,
+					options: {
+						path: path.resolve(__dirname, "dist"),
+					}
+				}, {
+					loader: 'css-loader', // translates CSS into CommonJS modules
+				}, {
+					loader: 'sass-loader' // compiles Sass to CSS
+				}]
 			},
 			{
 				test: /\.mp3$/,
@@ -50,6 +57,12 @@ module.exports = {
 	plugins: [
     new HtmlWebpackPlugin({
 			template: "./src/index.html"
-		})
-  ],
+		}),
+		new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    })
+  ]
 }

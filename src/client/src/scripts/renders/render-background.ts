@@ -28,7 +28,7 @@ export default class RenderBackground {
         RenderBackground.instance.canvas.height = window.innerHeight;
     }
 
-    public drawBackground(): any {
+    public draw(): any {
         this.ctx.fillStyle = '#669cff'
         this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     }

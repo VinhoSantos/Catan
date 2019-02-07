@@ -1,5 +1,4 @@
-declare var require: any;
-require('../css/main.scss');
+import '../css/main.scss';
 
 import Game from './game';
 
