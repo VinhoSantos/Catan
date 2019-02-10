@@ -6,31 +6,52 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: darkgrey;
 }
 
 canvas {
     -webkit-tap-highlight-color: transparent;
 }
 
-#background-canvas, #game-canvas {
+main {
+    background-color: lightgrey;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    padding-right: 300px;
+}
+
+aside {
+    background-color: darkslateblue;
+    width: 300px;
     position: fixed;
-    overflow: hidden;
     top: 0;
-    left: 0;
+    bottom: 0;
+    right: 0;
+    left: auto;
 }
 
-#background-canvas {
-    z-index: -100;
-}
-
-#game-canvas {
-    z-index: -10;
-}
-
-#loader {
-    display: none;
+#game {
+    background-color: lightblue;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 #hud {
-    display: none;
+    background-color: darksalmon;
+    height: 150px;
+    max-width: 100%;
+}
+
+#background-canvas, #game-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    
 }

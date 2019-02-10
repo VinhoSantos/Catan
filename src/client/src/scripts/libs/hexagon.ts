@@ -232,9 +232,7 @@ export class Layout
         }
         return corners;
     }
-
 }
-
 
 class Tests
 {
