@@ -2,6 +2,8 @@ import * as signalR from '@aspnet/signalr';
 import RenderCanvas from './renders/render-canvas';
 import RenderBackground from './renders/render-background';
 import RenderDom from './renders/render-dom';
+import GameService from './gameService';
+
 import * as contracts from './data/contracts';
 type GameState = contracts.Scripts.Data.Models.GameState;
 type Player = contracts.Scripts.Data.Models.Player;
@@ -13,7 +15,9 @@ export default class Game {
     private loader: RenderDom;
     private server = 'http://localhost:52257';
     private connection: signalR.HubConnection;
+    private gameState: GameState;
     private player: Player;
+    private connectedPlayers: string[];
 
     constructor() {
         this.background = RenderBackground.getInstance();
@@ -28,6 +32,11 @@ export default class Game {
 
     private drawLoadingScreen(): void {
         this.loader.write('Loading Catan...');
+        this.loader.show();
+    }
+
+    private drawWaitingScreen(): void {
+        this.loader.write(`Waiting for other players to connect: ${this.gameState.players}/4`);
         this.loader.show();
     }
 
@@ -51,6 +60,7 @@ export default class Game {
             .catch((err: any) => {
                 console.log('Connection failed');
                 console.error(err.toString());
+                setTimeout(() => this.connectToServer(), 10000);
             });
     }
 

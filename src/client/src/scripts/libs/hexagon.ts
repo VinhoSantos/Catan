@@ -107,6 +107,20 @@ export class Hex
         }
         return results;
     }
+
+    public neighbors(): Hex[] {
+        const neighbors: Hex[] = [];
+        Hex.directions.forEach((hex: Hex) => {
+            neighbors.push(this.add(hex));
+        });
+        return neighbors;
+    }
+
+    public commonNeighborsWith(hex: Hex): Hex[] {
+        const common = this.neighbors().filter(x => hex.neighbors().some(h => h.q === x.q && h.s === x.s && h.r === x.r));
+        
+        return common;
+    }
 }
 
 export class OffsetCoord

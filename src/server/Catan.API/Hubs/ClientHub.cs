@@ -32,7 +32,7 @@ namespace Catan.API.Hubs
 
             Clients.Caller.SendAsync("IsConnected", player);
             Clients.Others.SendAsync("PlayerConnected", player);
-
+            
             return Clients.AllExcept(_gameServer.Games.SelectMany(g => g.Players.Keys).ToList()).SendAsync("UpdateAvailableGames", _gameServer.Games);
         }
 

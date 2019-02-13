@@ -1,6 +1,6 @@
 'use strict';
 
-export class Guid extends String {
+export default class Guid extends String {
 	static empty = '00000000-0000-0000-0000-000000000000';
 
 	static newGuid = (): string => {

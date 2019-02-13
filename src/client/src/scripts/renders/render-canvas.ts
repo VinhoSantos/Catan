@@ -20,6 +20,9 @@ export default class RenderCanvas {
     private hexHeight: number; //max height of a hexagon
     private hexBorder: number; //border of hexagon
 
+    private disableMouseMoveTrigger: boolean = false;
+    private previousHex: Hex;
+
     constructor() { }
 
     static getInstance() {
@@ -80,42 +83,65 @@ export default class RenderCanvas {
     }  
 
     private trackMouse(event: MouseEvent): void {
+        if (this.disableMouseMoveTrigger) return;
+
+        this.disableMouseMoveTrigger = true;
+        
         var mouseX = event.clientX;
         var mouseY = event.clientY;
-
         this.highlightHexagon(mouseX, mouseY);
+
+        this.disableMouseMoveTrigger = false;
     }
 
     highlightHexagon(mouseX: number, mouseY: number): any {
         var layout = new Layout(Layout.pointy, new Point(this.hexR, this.hexR), new Point(this.centerX, this.centerY));
-        var hex = layout.pixelToHex(new Point(mouseX, mouseY));
+        var hex = layout.pixelToHex(new Point(mouseX, mouseY)).round();
+        if (!this.previousHex) {
+            this.previousHex = hex;
+        } else {
+            if (hex.q == this.previousHex.q && hex.r == this.previousHex.r && hex.s == this.previousHex.s) return;
+        }
+
+        console.log(hex.q + ' ' + hex.s + ' ' + hex.r);
         //console.log(`x, y, z: ${hex.q}, ${hex.s}, ${hex.r}`);
-        console.log(`distance: ${hex.distance(new Hex(0, 0, 0))}`);
+        //console.log(`distance: ${Math.round(hex.distance(new Hex(0, 0, 0)))}`);
+
+        this.drawBoard();
+
+        hex.neighbors().forEach((neighbor: Hex) => {
+            this.drawHiglightedHexagon(neighbor);
+        });
+
+        hex.commonNeighborsWith(hex.neighbor(0)).forEach((neighbor: Hex) => {
+            this.drawHiglightedHexagon(neighbor);
+        });
+        this.previousHex = hex;
     }
 
     private drawFields() {
         //core
-        this.drawHexagonAtCoordinates(new Hex(0, 0, 0), Color.dessert);
+        this.drawHexagon(new Hex(0, 0, 0), Color.dessert);
         //inner ring
-        this.drawHexagonAtCoordinates(new Hex(1, 0, -1), Color.wood);
-        this.drawHexagonAtCoordinates(new Hex(0, 1, -1), Color.wool);
-        this.drawHexagonAtCoordinates(new Hex(-1, 1, 0), Color.wheat);
-        this.drawHexagonAtCoordinates(new Hex(-1, 0, 1), Color.wood);
-        this.drawHexagonAtCoordinates(new Hex(0, -1, 1), Color.brick);
-        this.drawHexagonAtCoordinates(new Hex(1, -1, 0), Color.wool);
+        this.drawHexagon(new Hex(1, 0, -1), Color.wood);
+        this.drawHexagon(new Hex(0, 1, -1), Color.wool);
+        this.drawHexagon(new Hex(-1, 1, 0), Color.wheat);
+        this.drawHexagon(new Hex(-1, 0, 1), Color.wood);
+        this.drawHexagon(new Hex(0, -1, 1), Color.brick);
+        this.drawHexagon(new Hex(1, -1, 0), Color.wool);
         //outer ring
-        this.drawHexagonAtCoordinates(new Hex(2, 0, -2), Color.wheat);
-        this.drawHexagonAtCoordinates(new Hex(1, 1, -2), Color.ore);
-        this.drawHexagonAtCoordinates(new Hex(0, 2, -2), Color.wood);
-        this.drawHexagonAtCoordinates(new Hex(-1, 2, -1), Color.brick);
-        this.drawHexagonAtCoordinates(new Hex(-2, 2, 0), Color.wool);
-        this.drawHexagonAtCoordinates(new Hex(-2, 1, 1), Color.wheat);
-        this.drawHexagonAtCoordinates(new Hex(-2, 0, 2), Color.ore);
-        this.drawHexagonAtCoordinates(new Hex(-1, -1, 2), Color.wood);
-        this.drawHexagonAtCoordinates(new Hex(0, -2, 2), Color.brick);
-        this.drawHexagonAtCoordinates(new Hex(1, -2, 1), Color.wool);
-        this.drawHexagonAtCoordinates(new Hex(2, -2, 0), Color.wheat);
-        this.drawHexagonAtCoordinates(new Hex(2, -1, -1), Color.ore);
+        this.drawHexagon(new Hex(2, 0, -2), Color.wheat);
+        this.drawHexagon(new Hex(1, 1, -2), Color.ore);
+        this.drawHexagon(new Hex(0, 2, -2), Color.wood);
+        this.drawHexagon(new Hex(-1, 2, -1), Color.brick);
+        this.drawHexagon(new Hex(-2, 2, 0), Color.wool);
+        this.drawHexagon(new Hex(-2, 1, 1), Color.wheat);
+        this.drawHexagon(new Hex(-2, 0, 2), Color.ore);
+        this.drawHexagon(new Hex(-1, -1, 2), Color.wood);
+        this.drawHexagon(new Hex(0, -2, 2), Color.brick);
+        this.drawHexagon(new Hex(1, -2, 1), Color.wool);
+        this.drawHexagon(new Hex(2, -2, 0), Color.wheat);
+        this.drawHexagon(new Hex(2, -1, -1), Color.ore);
     }
 
     private drawStreets(): void {
@@ -234,28 +260,23 @@ export default class RenderCanvas {
         return new Point(intersectionX, intersectionY);
     }
 
-    private drawHexagonAtCoordinates(hex: Hex, fieldType: string) {
+    private drawHexagon(hex: Hex, fieldType: string) {
         //calculate middle point of hexagon
         const posX = this.centerX + (hex.q * this.hexWidth / 2) - (hex.s * this.hexWidth / 2);
         const posY = this.centerY + (hex.r * this.hexHeight * 3 / 4);
 
         //draw hexagon
-        this.ctx.beginPath();
-        this.ctx.moveTo(posX + this.hexR * Math.cos(this.toRadians(30)), posY + this.hexR * Math.sin(this.toRadians(30))); //punt rechtsonder
-        this.ctx.lineTo(posX + this.hexR * Math.cos(this.toRadians(90)), posY + this.hexR * Math.sin(this.toRadians(90)));
-        this.ctx.lineTo(posX + this.hexR * Math.cos(this.toRadians(150)), posY + this.hexR * Math.sin(this.toRadians(150)));
-        this.ctx.lineTo(posX + this.hexR * Math.cos(this.toRadians(210)), posY + this.hexR * Math.sin(this.toRadians(210)));
-        this.ctx.lineTo(posX + this.hexR * Math.cos(this.toRadians(270)), posY + this.hexR * Math.sin(this.toRadians(270)));
-        this.ctx.lineTo(posX + this.hexR * Math.cos(this.toRadians(330)), posY + this.hexR * Math.sin(this.toRadians(330)));
-        this.ctx.closePath();        
+        const point = new Point(posX, posY);
+        this.drawHexagonAtCoordinates(new Point(posX, posY), this.hexR);
+
         this.ctx.fillStyle = fieldType;
         this.ctx.fill();
         this.ctx.strokeStyle = Color.border;
         this.ctx.lineWidth = this.hexBorder;
-        this.ctx.stroke();
+        this.ctx.stroke();   
 
         //draw dot in center of hexagon
-        this.drawCircleAt(posX, posY, this.hexR / 20, Color.hexCenter);
+        this.drawCircleAt(point.x, point.y, this.hexR / 20, Color.hexCenter);
 
         //draw x, y, z coordinates in hexagon
         this.ctx.font = '10pt Roboto';
@@ -272,9 +293,34 @@ export default class RenderCanvas {
             textZ = `z = r`;
         }
 
-        this.ctx.fillText(textX, posX + (this.hexR * 3/5) * Math.cos(this.toRadians(330)), posY + (this.hexR * 3/5) * Math.sin(this.toRadians(330)));
-        this.ctx.fillText(textY, posX + (this.hexR * 3/5) * Math.cos(this.toRadians(210)), posY + (this.hexR * 3/5) * Math.sin(this.toRadians(210)));
-        this.ctx.fillText(textZ, posX + (this.hexR * 2/3) * Math.cos(this.toRadians(90)), posY + (this.hexR * 2/3) * Math.sin(this.toRadians(90)));
+        this.ctx.fillText(textX, point.x + (this.hexR * 3/5) * Math.cos(this.toRadians(330)), point.y + (this.hexR * 3/5) * Math.sin(this.toRadians(330)));
+        this.ctx.fillText(textY, point.x + (this.hexR * 3/5) * Math.cos(this.toRadians(210)), point.y + (this.hexR * 3/5) * Math.sin(this.toRadians(210)));
+        this.ctx.fillText(textZ, point.x + (this.hexR * 2/3) * Math.cos(this.toRadians(90)), point.y + (this.hexR * 2/3) * Math.sin(this.toRadians(90)));
+    }
+
+    private drawHiglightedHexagon(hex: Hex) {
+        //calculate middle point of hexagon
+        const posX = this.centerX + (hex.q * this.hexWidth / 2) - (hex.s * this.hexWidth / 2);
+        const posY = this.centerY + (hex.r * this.hexHeight * 3 / 4);
+
+        //draw hexagon
+        const point = new Point(posX, posY);
+        this.drawHexagonAtCoordinates(new Point(posX, posY), this.hexR - (this.hexBorder / 2));
+
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        this.ctx.fill(); 
+    }
+
+    private drawHexagonAtCoordinates(point: Point, size: number) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(point.x + size * Math.cos(this.toRadians(30)), point.y + size * Math.sin(this.toRadians(30))); //punt rechtsonder
+        this.ctx.lineTo(point.x + size * Math.cos(this.toRadians(90)), point.y + size * Math.sin(this.toRadians(90)));
+        this.ctx.lineTo(point.x + size * Math.cos(this.toRadians(150)), point.y + size * Math.sin(this.toRadians(150)));
+        this.ctx.lineTo(point.x + size * Math.cos(this.toRadians(210)), point.y + size * Math.sin(this.toRadians(210)));
+        this.ctx.lineTo(point.x + size * Math.cos(this.toRadians(270)), point.y + size * Math.sin(this.toRadians(270)));
+        this.ctx.lineTo(point.x + size * Math.cos(this.toRadians(330)), point.y + size * Math.sin(this.toRadians(330)));
+        this.ctx.closePath();        
+             
     }
 
     private toDegrees (angle: number): number {
