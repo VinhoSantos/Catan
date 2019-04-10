@@ -1,8 +1,7 @@
-﻿using Catan.API.Models;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace Catan.API
+namespace Catan.Core.Game
 {
     public class GameServer
     {

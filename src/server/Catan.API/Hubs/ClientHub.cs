@@ -1,39 +1,28 @@
-﻿using Catan.API.Models;
+﻿using Catan.Core.Game;
+using Catan.Core.Game.Players;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Catan.API.Hubs
 {
     public class ClientHub: Hub
     {
+        private readonly IPlayerConnector _playerConnector;
         private GameServer _gameServer;
 
-        public ClientHub()
+        public ClientHub(IPlayerConnector playerConnector)
         {
+            _playerConnector = playerConnector;
             _gameServer = GameServer.Instance;
         }
 
         public override Task OnConnectedAsync()
         {
             var connectionId = Context.ConnectionId;
-            var playerCount = _gameServer.ConnectedPlayers.Count;
 
-            var player = new Player(connectionId, $"Speler {playerCount + 1}");
-
-            _gameServer.ConnectedPlayers.TryAdd(connectionId, player);
-            playerCount++;
-
-            Console.WriteLine(playerCount);
-
-            Thread.Sleep(1000);
-
-            Clients.Caller.SendAsync("IsConnected", player);
-            Clients.Others.SendAsync("PlayerConnected", player);
-            
-            return Clients.AllExcept(_gameServer.Games.SelectMany(g => g.Players.Keys).ToList()).SendAsync("UpdateAvailableGames", _gameServer.Games);
+            _playerConnector.Connect(connectionId);
         }
 
         public override Task OnDisconnectedAsync(Exception exception)

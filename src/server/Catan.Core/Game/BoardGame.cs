@@ -1,10 +1,10 @@
-﻿using Catan.API.Extensions;
-using Catan.API.Models;
+﻿using Catan.Core.Extensions;
+using Catan.Core.Game.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Catan.API
+namespace Catan.Core.Game
 {
     [CodeGenerator]
     public class BoardGame

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Catan.API.Extensions
+namespace Catan.Core.Extensions
 {
     public class CodeGeneratorAttribute: Attribute
     {

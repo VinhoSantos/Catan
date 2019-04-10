@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Catan.API.Libs
+namespace Catan.Core.Libs
 {
     public struct Point
     {

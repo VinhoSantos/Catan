@@ -1,4 +1,4 @@
-﻿namespace Catan.API
+﻿namespace Catan.Core.Game.Enums
 {
     public enum GameStatus
     {

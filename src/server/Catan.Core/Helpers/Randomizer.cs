@@ -1,10 +1,10 @@
-﻿using Catan.API.Models;
-using Catan.API.Models.Enums;
+﻿using Catan.Core.Game;
+using Catan.Core.Game.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Catan.API.Helpers
+namespace Catan.Core.Helpers
 {
     public static class Randomizer
     {

@@ -1,9 +1,9 @@
-﻿using Catan.API.Models.Enums;
+﻿using Catan.Core.Game.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Catan.API.Models
+namespace Catan.Core.Game
 {
     public abstract class Rules
     {

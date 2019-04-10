@@ -1,4 +1,4 @@
-﻿namespace Catan.API.Helpers
+﻿namespace Catan.Core.Helpers
 {
     public static class Calculator
     {

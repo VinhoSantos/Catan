@@ -1,10 +1,10 @@
-﻿using Catan.API.Helpers;
-using Catan.API.Libs;
-using Catan.API.Models.Enums;
+﻿using Catan.Core.Helpers;
+using Catan.Core.Libs;
+using Catan.Core.Game.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Catan.API.Models
+namespace Catan.Core.Game
 {
     public class Board
     {

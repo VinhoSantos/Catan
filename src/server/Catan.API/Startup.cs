@@ -1,4 +1,5 @@
-﻿using Catan.API.Hubs;
+﻿using Catan.API.DependencyInjection;
+using Catan.API.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace Catan.API
 
             services.AddSignalR();
             services.AddCors();
+            services.AddCatanCore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

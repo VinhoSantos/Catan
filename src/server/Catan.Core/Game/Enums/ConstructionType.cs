@@ -1,4 +1,4 @@
-﻿namespace Catan.API.Models.Enums
+﻿namespace Catan.Core.Game.Enums
 {
     public enum ConstructionType
     {

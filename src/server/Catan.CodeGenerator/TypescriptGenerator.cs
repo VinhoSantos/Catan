@@ -1,4 +1,4 @@
-﻿using Catan.API.Extensions;
+﻿using Catan.Core.Extensions;
 using Catan.CodeGenerator.TsGenerator;
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ namespace Catan.CodeGenerator
 
             public override string GetModuleName(string @namespace)
             {
-                return @namespace.Replace("Catan.API", "Scripts.Data");
+                return @namespace.Replace("Catan.Core", "Scripts.Data");
             }
 
             public override void WriteModuleContent(StringBuilder result, TsModule module)

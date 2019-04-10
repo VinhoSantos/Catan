@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Catan.API.Models
+namespace Catan.Core.Game
 {
     public class GameState
     {
