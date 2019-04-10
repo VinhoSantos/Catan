@@ -13,7 +13,7 @@ namespace Catan.API.DependencyInjection
             services.AddTransient<IPlayerConnector, PlayerConnector>();
             services.AddTransient<IGameEvents, GameEventsPublisher>();
             services.AddSingleton<IPlayerManager, PlayerManager>();
-            //services.AddTransient<IGameManager, GameManager>();
+            services.AddSingleton<IGameManager, GameManager>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Catan.API.DependencyInjection;
 using Catan.API.Hubs;
+using Catan.Core.Game;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

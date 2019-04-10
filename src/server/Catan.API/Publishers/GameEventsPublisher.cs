@@ -1,6 +1,6 @@
 ﻿using Catan.API.Hubs;
 using Catan.Core;
-using Catan.Core.Events;
+using Catan.Core.Events.Player;
 using Catan.Core.Game;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Catan.API.Models;
+﻿using Catan.Core.Game;
 using FluentAssertions;
 using System.Collections.Generic;
 using System.Linq;

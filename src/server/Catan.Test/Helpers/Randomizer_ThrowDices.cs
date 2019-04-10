@@ -1,4 +1,4 @@
-using Catan.API.Helpers;
+using Catan.Core.Helpers;
 using FluentAssertions;
 using Xunit;
 

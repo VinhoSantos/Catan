@@ -1,6 +1,6 @@
-using Catan.API.Helpers;
-using Catan.API.Models;
-using Catan.API.Models.Enums;
+using Catan.Core.Game;
+using Catan.Core.Game.Enums;
+using Catan.Core.Helpers;
 using FluentAssertions;
 using System.Collections.Generic;
 using System.Linq;

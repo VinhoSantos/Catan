@@ -10,8 +10,8 @@ namespace Catan.Core.Game
         Player UpdatePlayer(string id, string name);
         Player GetPlayer(string id);
         IEnumerable<Player> GetAllPlayers();
-        void RemovePlayer(string id);
-        void RemovePlayer(Player player);
+        Player RemovePlayer(string id);
+        Player RemovePlayer(Player player);
     }
 
     public class PlayerManager : IPlayerManager
@@ -53,14 +53,16 @@ namespace Catan.Core.Game
             return _players.Values;
         }
 
-        public void RemovePlayer(string id)
+        public Player RemovePlayer(string id)
         {
-            _players.TryRemove(id, out _);
+            _players.TryRemove(id, out var deletedPlayer);
+            return deletedPlayer;
         }
 
-        public void RemovePlayer(Player player)
+        public Player RemovePlayer(Player player)
         {
-            _players.TryRemove(player.Id, out _);
+            _players.TryRemove(player.Id, out var deletedPlayer);
+            return deletedPlayer;
         }
     }
 }

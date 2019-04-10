@@ -23,14 +23,17 @@ namespace Catan.API.Hubs
             var connectionId = Context.ConnectionId;
 
             _playerConnector.Connect(connectionId);
+
+            return Task.CompletedTask;
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
             var connectionId = Context.ConnectionId;
-            _gameServer.ConnectedPlayers.TryRemove(connectionId, out Player player);
 
-            return Clients.All.SendAsync("PlayerDisconnected", player);
+            _playerConnector.Disconnect(connectionId);
+
+            return Task.CompletedTask;
         }
         
         public async Task OnCreateGame(string playerId)
