@@ -10,12 +10,12 @@ namespace Catan.API.Hubs
     public class ClientHub: Hub
     {
         private readonly IPlayerConnector _playerConnector;
-        private GameServer _gameServer;
+        private readonly IGameConnector _gameConnector;
 
-        public ClientHub(IPlayerConnector playerConnector)
+        public ClientHub(IPlayerConnector playerConnector, IGameConnector gameConnector)
         {
             _playerConnector = playerConnector;
-            _gameServer = GameServer.Instance;
+            _gameConnector = gameConnector;
         }
 
         public override Task OnConnectedAsync()

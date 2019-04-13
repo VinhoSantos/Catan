@@ -17,6 +17,7 @@ namespace Catan.Core.Game
     public class PlayerManager : IPlayerManager
     {
         private ConcurrentDictionary<string, Player> _players = new ConcurrentDictionary<string, Player>();
+        
         public Player UpdatePlayer(string id, string name)
         {
             _players.TryGetValue(id, out var player);
