@@ -4,8 +4,7 @@
     {
         Street = 1,
         Village = 2,
-        City = 3,
-        DevelopmentCard = 4
+        City = 3
     }
 
     public enum DevelopmentCardType

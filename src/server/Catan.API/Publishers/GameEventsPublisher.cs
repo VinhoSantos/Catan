@@ -1,12 +1,15 @@
 ﻿using Catan.API.Hubs;
 using Catan.Core;
+using Catan.Core.Events.Game;
 using Catan.Core.Events.Player;
 using Catan.Core.Game;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace Catan.API.Events
+namespace Catan.API.Publishers
 {
     public class GameEventsPublisher : IGameEvents
     {
@@ -14,7 +17,9 @@ namespace Catan.API.Events
 
         private IClientProxy Client(string connectionId) => _clientHub.Clients.Client(connectionId);
         private IClientProxy Others(string connectionId) => _clientHub.Clients.AllExcept(connectionId);
-        private IClientProxy OthersInGame(string gameId, string exceptConnectionId) => _clientHub.Clients.GroupExcept(gameId, exceptConnectionId);
+        private IClientProxy All() => _clientHub.Clients.All;
+        private IClientProxy OthersInGame(Guid gameId, string exceptConnectionId) => _clientHub.Clients.GroupExcept(gameId.ToString(), exceptConnectionId);
+        private IClientProxy AllInGame(Guid gameId) => _clientHub.Clients.Group(gameId.ToString());
 
         public GameEventsPublisher(IHubContext<ClientHub> clientHub)
         {
@@ -41,24 +46,35 @@ namespace Catan.API.Events
             return Task.WhenAll(tasks);
         }
 
-        public Task OnGameCreated(BoardGame game)
+        public Task OnGameCreated(BoardGame game, Player player)
         {
-            throw new System.NotImplementedException();
+            
+
+            var tasks = new List<Task>();
+
+            tasks.Add(Client(player.Id).SendAsync("GameCreated", new GameCreatedEvent { Id = game.Id, Status = game.Status }));
+            tasks.Add(All().SendAsync("GameCreated", new GameCreatedEvent { Id = game.Id, Status = game.Status}));
+            
+            return Task.WhenAll(tasks);
         }
 
         public Task OnGameJoined(BoardGame game)
         {
-            throw new System.NotImplementedException();
+            var tasks = new List<Task>();
+
+            tasks.Add(AllInGame(game.Id).SendAsync("GameJoined", new GameJoinedEvent { Id = game.Id, Status = game.Status, Players = game.Players.Select(p => new Player(p.Key, p.Value.Name)) }));
+
+            return Task.WhenAll(tasks);
         }
 
         public Task OnGameStarted(BoardGame game)
         {
-            throw new System.NotImplementedException();
+            return AllInGame(game.Id).SendAsync("GameStarted", new GameStartedEvent { Id = game.Id, Status = game.Status, Players = game.Players.Select(p => new Player(p.Key, p.Value.Name)) });
         }
 
-        public Task OnGameFinished(BoardGame game)
+        public Task OnGameEnded(BoardGame game)
         {
-            throw new System.NotImplementedException();
+            return AllInGame(game.Id).SendAsync("GameFinished", new GameFinishedEvent { Id = game.Id, Status = game.Status });
         }
     }
 }

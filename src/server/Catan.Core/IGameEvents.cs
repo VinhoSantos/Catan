@@ -7,9 +7,9 @@ namespace Catan.Core
     {
         Task OnPlayerConnected(Player player);
         Task OnPlayerDisconnected(Player player);
-        Task OnGameCreated(BoardGame game);
+        Task OnGameCreated(BoardGame game, Player player);
         Task OnGameJoined(BoardGame game);
         Task OnGameStarted(BoardGame game);
-        Task OnGameFinished(BoardGame game);
+        Task OnGameEnded(BoardGame game);
     }
 }

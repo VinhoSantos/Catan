@@ -1,6 +1,6 @@
-﻿using Catan.Core.Helpers;
+﻿using Catan.Core.Game.Enums;
+using Catan.Core.Helpers;
 using Catan.Core.Libs;
-using Catan.Core.Game.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,10 +26,32 @@ namespace Catan.Core.Game
             PopulateBoard();
         }
 
+        public void AddStreet(List<Hex> coordinates)
+        {
+            AddConstruction(ConstructionType.Village, coordinates);
+        }
+
+        public void AddVillage(List<Hex> coordinates)
+        {
+            AddConstruction(ConstructionType.Village, coordinates);
+        }
+
+        public void AddCity(List<Hex> coordinates)
+        {
+            AddConstruction(ConstructionType.City, coordinates);
+        }
+
+        private void AddConstruction(ConstructionType type, List<Hex> coordinates)
+        {
+            var construction = new Construction(type, coordinates);
+            Constructions.Add(construction);
+        }
+
         private void PopulateBoard()
         {
             PlaceTilesRandomlyOnBoard();
             PlacePortsOnBoard();
+
         }
 
         private void PlacePortsOnBoard()
@@ -58,7 +80,7 @@ namespace Catan.Core.Game
         private void PlaceTilesRandomlyOnBoard()
         {
             var randomResourceTypes = Randomizer.GetRandomListOfResourceTypes(_rules.Resources);
-            var randomNumbers = Randomizer.GetRandomListOfNumbers(_rules.NumberSets);
+            var randomNumbers = GetDefaultListOfNumbers();
 
             var coordinates = GetHexagonalCoordinates(2);
 
@@ -88,6 +110,14 @@ namespace Catan.Core.Game
             }
         }
 
+        private static List<int> GetDefaultListOfNumbers()
+        {
+            return new List<int>
+            {
+                5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11
+            };
+        }
+
         public List<(int X, int Y, int Z)> GetHexagonalCoordinates(int steps)
         {
             var coordinates = new List<(int X, int Y, int Z)>(); //x, y, z
@@ -112,7 +142,19 @@ namespace Catan.Core.Game
     public class Construction
     {
         public ConstructionType Type { get; set; }
-        public List<Hex> Hexes { get; set; }
+        public List<Hex> Coordinates { get; set; }
+
+        public Construction(ConstructionType type, List<Hex> coordinates)
+        {
+            Type = type;
+            Coordinates = coordinates;
+        }
+
+        public Construction(ConstructionType type, List<(int x, int y, int z)> coordinates)
+        {
+            Type = type;
+            Coordinates = coordinates.Select(co => new Hex(co.x, co.y, co.z)).ToList();
+        }
     }
 
     public class Port

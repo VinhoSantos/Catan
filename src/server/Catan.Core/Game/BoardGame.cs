@@ -9,14 +9,17 @@ namespace Catan.Core.Game
     [CodeGenerator]
     public class BoardGame
     {
+        private readonly ActionProcessor _actionProcessor;
+
         public Guid Id { get; set; }
         public GameStatus Status { get; set; }
         public Rules Rules { get; set; }
-        public Dictionary<string, string> Players { get; set; }
+        public Dictionary<string, Player> Players { get; set; }
         public GameState GameState { get; set; }
 
         public BoardGame()
         {
+            _actionProcessor = new ActionProcessor(this);
             Id = Guid.NewGuid();
             Status = GameStatus.Waiting;
             Rules = new BasicRules();
@@ -31,8 +34,32 @@ namespace Catan.Core.Game
             GameState = new GameState
             {
                 Board = new Board(Rules),
-                Players = Players.Select(p => new Player(p.Key, p.Value)).ToList()
+                Players = Players.Select((p, index) => new GamePlayer(this, p.Value, (PlayerColor)index)).ToList()
             };
+        }
+
+        public void End()
+        {
+            Status = GameStatus.Ended;
+        }
+
+        public void AddPlayer(Player player)
+        {
+            Players.Add(player.Id, player);
+        }
+
+        public void RemovePlayer(Player player)
+        {
+            Players.Remove(player.Id);
+        }
+
+        public void DoAction(Player player, Action action)
+        {
+            var gamePlayer = GameState.Players.SingleOrDefault(p => p.Player == player);
+            if (gamePlayer == null)
+                return;
+
+            _actionProcessor.ProcessAction(gamePlayer, action);
         }
     }
 }

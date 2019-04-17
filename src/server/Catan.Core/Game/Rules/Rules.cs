@@ -234,12 +234,20 @@ namespace Catan.Core.Game
                             Amount = 3
                         }
                     }
-                },
-                new ConstructionRuleSet
+                }
+            };
+
+            DevelopmentCards = new List<DevelopmentCardRuleSet>
+            {
+                new DevelopmentCardRuleSet
                 {
-                    Type = ConstructionType.DevelopmentCard,
                     Cost = new List<ResourceRuleSet>
                     {
+                        new ResourceRuleSet
+                        {
+                            Type = ResourceType.Wool,
+                            Amount = 1
+                        },
                         new ResourceRuleSet
                         {
                             Type = ResourceType.Wheat,
@@ -249,42 +257,36 @@ namespace Catan.Core.Game
                         {
                             Type = ResourceType.Ore,
                             Amount = 1
-                        },
-                        new ResourceRuleSet
+                        }
+                    },
+                    DevelopmentCards = new List<DevelopmentCardTypeRuleSet>
+                    {
+                        new DevelopmentCardTypeRuleSet
                         {
-                            Type = ResourceType.Wool,
-                            Amount = 1
+                            Type = DevelopmentCardType.Knight,
+                            Amount = 14
+                        },
+                        new DevelopmentCardTypeRuleSet
+                        {
+                            Type = DevelopmentCardType.VictoryPoint,
+                            Amount = 5
+                        },
+                        new DevelopmentCardTypeRuleSet
+                        {
+                            Type = DevelopmentCardType.Streets,
+                            Amount = 2
+                        },
+                        new DevelopmentCardTypeRuleSet
+                        {
+                            Type = DevelopmentCardType.Resources,
+                            Amount = 2
+                        },
+                        new DevelopmentCardTypeRuleSet
+                        {
+                            Type = DevelopmentCardType.Monopoly,
+                            Amount = 2
                         }
                     }
-                }
-            };
-
-            DevelopmentCards = new List<DevelopmentCardRuleSet>
-            {
-                new DevelopmentCardRuleSet
-                {
-                    Type = DevelopmentCardType.Knight,
-                    Amount = 14
-                },
-                new DevelopmentCardRuleSet
-                {
-                    Type = DevelopmentCardType.VictoryPoint,
-                    Amount = 5
-                },
-                new DevelopmentCardRuleSet
-                {
-                    Type = DevelopmentCardType.Streets,
-                    Amount = 2
-                },
-                new DevelopmentCardRuleSet
-                {
-                    Type = DevelopmentCardType.Resources,
-                    Amount = 2
-                },
-                new DevelopmentCardRuleSet
-                {
-                    Type = DevelopmentCardType.Monopoly,
-                    Amount = 2
                 }
             };
 
@@ -294,7 +296,7 @@ namespace Catan.Core.Game
         private void Validate()
         {
             if (Resources.Where(r => r.Type != ResourceType.Dessert).Sum(r => r.Amount) != NumberSets.Sum(n => n.Amount))
-                throw new ArgumentException("Rules unvalid: The amount of resources must match the amount of numbers");
+                throw new ArgumentException("Rules invalid: The amount of resources must match the amount of numbers");
         }
     }
 
@@ -327,6 +329,12 @@ namespace Catan.Core.Game
     }
 
     public class DevelopmentCardRuleSet
+    {
+        public List<ResourceRuleSet> Cost { get; set; }
+        public List<DevelopmentCardTypeRuleSet> DevelopmentCards { get; set; }
+    }
+
+    public class DevelopmentCardTypeRuleSet
     {
         public DevelopmentCardType Type { get; set; }
         public int Amount { get; set; }

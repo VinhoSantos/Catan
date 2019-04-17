@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Catan.Core.Game
 {
@@ -8,10 +9,12 @@ namespace Catan.Core.Game
     {
         BoardGame GetGame(Guid id);
         BoardGame CreateGame(Player player);
-        void JoinGame(Player player, Guid gameId);
-        void StartGame(BoardGame game);
-        void UpdateGame(BoardGame game);
-        void FinishGame(BoardGame game);
+        BoardGame JoinGame(Player player, Guid gameId);
+        BoardGame LeaveGame(Player player, Guid gameId);
+        BoardGame StartGame(Guid gameId);
+        BoardGame UpdateGame(BoardGame game);
+        BoardGame EndGame(Guid gameId);
+        void DoAction(Player player, Guid gameId, Action action);
         IEnumerable<BoardGame> GetAllGames();
     }
 
@@ -34,30 +37,57 @@ namespace Catan.Core.Game
             return game;
         }
 
-        public void JoinGame(Player player, Guid gameId)
+        public BoardGame JoinGame(Player player, Guid gameId)
         {
             _games.TryGetValue(gameId, out var game);
+            game?.AddPlayer(player);
 
+            return game;
         }
 
-        public void StartGame(BoardGame game)
+        public BoardGame LeaveGame(Player player, Guid gameId)
+        {
+            _games.TryGetValue(gameId, out var game);
+            game?.RemovePlayer(player);
+
+            return game;
+        }
+
+        public BoardGame StartGame(Guid gameId)
+        {
+            _games.TryGetValue(gameId, out var game);
+            game?.Start();
+
+            return game;
+        }
+
+        public BoardGame UpdateGame(BoardGame game)
         {
             throw new System.NotImplementedException();
         }
 
-        public void UpdateGame(BoardGame game)
+        public BoardGame EndGame(Guid gameId)
         {
-            throw new System.NotImplementedException();
+            _games.TryGetValue(gameId, out var game);
+            game?.End();
+
+            return game;
         }
 
-        public void FinishGame(BoardGame game)
+        public void DoAction(Player player, Guid gameId, Action action)
         {
-            throw new System.NotImplementedException();
+            _games.TryGetValue(gameId, out var game);
+            game.DoAction(player, action);
         }
 
         public IEnumerable<BoardGame> GetAllGames()
         {
             return _games.Values;
+        }
+
+        private bool IsPlayerInGame(Player player)
+        {
+            return GetAllGames().Any(g => g.Players.Any(p => p.Key == player.Id));
         }
     }
 }

@@ -2,8 +2,8 @@
 using Catan.Core.Game.Players;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
+using Action = Catan.Core.Game.Action;
 
 namespace Catan.API.Hubs
 {
@@ -20,56 +20,51 @@ namespace Catan.API.Hubs
 
         public override Task OnConnectedAsync()
         {
-            var connectionId = Context.ConnectionId;
-
-            _playerConnector.Connect(connectionId);
+            _playerConnector.Connect(Context.ConnectionId);
 
             return Task.CompletedTask;
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            var connectionId = Context.ConnectionId;
-
-            _playerConnector.Disconnect(connectionId);
+            _playerConnector.Disconnect(Context.ConnectionId);
 
             return Task.CompletedTask;
         }
         
-        public async Task OnCreateGame(string playerId)
+        public Task OnCreateGame(string playerId)
         {
-            if (_gameServer.Games.Any(g => g.GameState.Players.Any(p => p.Id == playerId)))
-                throw new ArgumentException("Player is still active in other game");
+            _gameConnector.CreateGame(Context.ConnectionId);
 
-            var game = new BoardGame();
-            _gameServer.Games.Add(game);
-
-            await Groups.AddToGroupAsync(playerId, game.Id.ToString());
-
-            Clients.Caller.SendAsync("GameCreated", game);
-            Clients.GroupExcept(game.Id.ToString(), playerId).SendAsync("PlayerCreatedGame");
+            return Task.CompletedTask;
         }
 
-        public async Task OnJoinGame(string playerId, Guid gameId)
+        public Task OnJoinGame(string playerId, Guid gameId)
         {
-            if (_gameServer.Games.Any(g => g.GameState.Players.Any(p => p.Id == playerId)))
-                throw new ArgumentException("Player is still active in other game");
+            _gameConnector.JoinGame(playerId, gameId);
 
-            var game = _gameServer.Games.Find(g => g.Id == gameId);
-            game.Players.Add(playerId, _gameServer.ConnectedPlayers[playerId].Name);
-
-            await Groups.AddToGroupAsync(playerId, gameId.ToString());
-
-            Clients.Caller.SendAsync("GameJoined", game);
-            Clients.GroupExcept(game.Id.ToString(), playerId).SendAsync("PlayerJoinedGame");
-
-            if (game.Players.Count == game.Rules.MaxPlayers)
-                StartGame(game);
+            return Task.CompletedTask;
         }
 
-        private async void StartGame(BoardGame boardGame)
+        private Task OnStartGame(Guid gameId)
         {
-            boardGame.Start();
+            _gameConnector.StartGame(gameId);
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnDoAction(Guid gameId, Action action)
+        {
+            _gameConnector.DoAction(Context.ConnectionId, gameId, action);
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnRollAction(Guid gameId, RollAction action)
+        {
+            _gameConnector.DoAction(Context.ConnectionId, gameId, action);
+
+            return Task.CompletedTask;
         }
     }
 }
