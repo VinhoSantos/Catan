@@ -172,5 +172,6 @@ namespace Catan.Core.Game
         public Hex Hex { get; set; }
         public ResourceType ResourceType { get; set; }
         public int? Value { get; set; }
+        public bool IsBlocked { get; set; }
     }
 }

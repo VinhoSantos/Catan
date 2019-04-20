@@ -1,5 +1,6 @@
 ﻿using Catan.Core.Helpers;
 using System;
+using System.Linq;
 
 namespace Catan.Core.Game
 {
@@ -24,6 +25,7 @@ namespace Catan.Core.Game
                     ProcessRollAction();
                     break;
                 case ActionType.Harvest:
+                    ProcessHarvestAction();
                     break;
                 case ActionType.Buy:
                     break;
@@ -43,6 +45,36 @@ namespace Catan.Core.Game
         private void ProcessRollAction()
         {
             _game.GameState.LastDiceRoll = Randomizer.ThrowDices();
+        }
+
+        private void ProcessHarvestAction()
+        {
+            var tiles = _game.GameState.Board.Tiles.Where(t =>
+                t.Value.HasValue 
+                && t.Value.GetValueOrDefault() == _game.GameState.LastDiceRoll
+                && !t.IsBlocked);
+
+            //todo: check if robber is not on
+
+            foreach (var tile in tiles)
+            {
+                foreach (var gamePlayer in _game.GameState.Players)
+                {
+                    var villages = gamePlayer.Villages.Where(v => v.Coordinates.Contains(tile.Hex));
+                    var cities = gamePlayer.Villages.Where(v => v.Coordinates.Contains(tile.Hex));
+
+                    foreach (var village in villages)
+                    {
+                        gamePlayer.ResourceCards.Add(tile.ResourceType);
+                    }
+
+                    foreach (var city in cities)
+                    {
+                        gamePlayer.ResourceCards.Add(tile.ResourceType);
+                        gamePlayer.ResourceCards.Add(tile.ResourceType);
+                    }
+                }
+            }
         }
 
         public void Dispose()
