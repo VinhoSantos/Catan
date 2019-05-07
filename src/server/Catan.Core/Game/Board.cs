@@ -12,7 +12,6 @@ namespace Catan.Core.Game
         
         public List<Tile> Tiles { get; set; }
         public List<Port> Ports { get; set; }
-        public List<Construction> Constructions { get; set; }
 
         public Board()
         {
@@ -24,27 +23,6 @@ namespace Catan.Core.Game
         {
             _rules = rules;
             PopulateBoard();
-        }
-
-        public void AddStreet(List<Hex> coordinates)
-        {
-            AddConstruction(ConstructionType.Village, coordinates);
-        }
-
-        public void AddVillage(List<Hex> coordinates)
-        {
-            AddConstruction(ConstructionType.Village, coordinates);
-        }
-
-        public void AddCity(List<Hex> coordinates)
-        {
-            AddConstruction(ConstructionType.City, coordinates);
-        }
-
-        private void AddConstruction(ConstructionType type, List<Hex> coordinates)
-        {
-            var construction = new Construction(type, coordinates);
-            Constructions.Add(construction);
         }
 
         private void PopulateBoard()
@@ -154,6 +132,19 @@ namespace Catan.Core.Game
         {
             Type = type;
             Coordinates = coordinates.Select(co => new Hex(co.x, co.y, co.z)).ToList();
+        }
+
+        public bool IsNeighbourOf(List<Hex> coordinates)
+        {
+            var equalCount = 0;
+
+            foreach (var coordinate in Coordinates)
+            {
+                if (coordinates.Contains(coordinate))
+                    equalCount++;
+            }
+
+            return coordinates.Count - 1 == equalCount;
         }
     }
 

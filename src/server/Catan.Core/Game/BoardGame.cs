@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Catan.Core.Game
 {
-    [CodeGenerator]
+    [Contract]
     public class BoardGame
     {
         private readonly ActionProcessor _actionProcessor;
@@ -34,7 +34,8 @@ namespace Catan.Core.Game
             GameState = new GameState
             {
                 Board = new Board(Rules),
-                Players = Players.Select((p, index) => new GamePlayer(this, p.Value, (PlayerColor)index)).ToList()
+                Players = Players.Select((p, index) => new GamePlayer(this, p.Value, (PlayerColor)index)).ToList(),
+                DevelopmentCards = new List<DevelopmentCard>()
             };
         }
 

@@ -17,7 +17,7 @@ namespace Catan.Core.Libs
         }
     }
 
-    public struct Hex
+    public struct Hex : ICloneable
     {
         public readonly int Q;
         public readonly int R;
@@ -76,11 +76,21 @@ namespace Catan.Core.Libs
         {
             return Directions[direction];
         }
-
-
-        public Hex Neighbor(int direction)
+        
+        public Hex Neighbour(int direction)
         {
             return Add(Direction(direction));
+        }
+
+        public List<Hex> Neighbours()
+        {
+            var neighbours = new List<Hex>();
+            for (var i = 0; i < Directions.Count; i++)
+            {
+                neighbours.Add(Neighbour(i));
+            }
+
+            return neighbours;
         }
 
         public static List<Hex> Diagonals = new List<Hex>
@@ -110,6 +120,10 @@ namespace Catan.Core.Libs
             return Subtract(b).Length();
         }
 
+        public object Clone()
+        {
+            return new Hex(Q, R, S);
+        }
     }
 
     public struct FractionalHex

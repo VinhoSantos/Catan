@@ -1,4 +1,5 @@
 ﻿using Catan.Core.Game.Enums;
+using Catan.Core.Libs;
 using System;
 using System.Collections.Generic;
 
@@ -43,8 +44,9 @@ namespace Catan.Core.Game
 
     public class BuildAction : Action
     {
-        public ConstructionType Construction { get; set; }
-        public IEnumerable<ResourceType> Resources { get; set; }
+        public ConstructionType ConstructionType { get; set; }
+        public List<Hex> Coordinates { get; set; }
+
         public BuildAction() : base(ActionType.Build)
         {
         }
@@ -63,6 +65,8 @@ namespace Catan.Core.Game
 
     public class TradeAction : Action
     {
+
+
         public TradeAction() : base(ActionType.Trade)
         {
         }
@@ -70,6 +74,8 @@ namespace Catan.Core.Game
 
     public class BlockAction : Action
     {
+        public Hex TileCoordinates { get; set; }
+
         public BlockAction() : base(ActionType.Block)
         {
         }

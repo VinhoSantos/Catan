@@ -78,7 +78,16 @@ namespace Catan.CodeGenerator.TsGenerator
                     }
                 }
             }
-            return GetModuleName(type.Namespace) + "." + type.Name;
+            return GetModuleName(type.Namespace) + "." + CleanUpTypeName(type.Name);
+        }
+
+        private string CleanUpTypeName(string typeName)
+        {
+            //cleanup needed for KeyValuePair, to remove the "`2" in the name
+            var index = typeName.IndexOf("`", StringComparison.InvariantCultureIgnoreCase);
+            return index == -1
+                ? typeName
+                : typeName.Substring(0, index);
         }
 
         public virtual IEnumerable<Type> GetReferencedTypes(Type type)
@@ -155,7 +164,7 @@ namespace Catan.CodeGenerator.TsGenerator
 
         public virtual void WriteType(StringBuilder result, TsType type)
         {
-            result.Append($"    export {type.Type} {type.Name}");
+            result.Append($"    export {type.Type} {CleanUpTypeName(type.Name)}");
 
             if (type.BaseType != null)
                 result.Append($" extends {type.BaseType}");

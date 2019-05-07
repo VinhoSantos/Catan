@@ -1,9 +1,11 @@
 ﻿using Catan.Core.Game.Enums;
 using System;
 using System.Collections.Generic;
+using Catan.Core.Extensions;
 
 namespace Catan.Core.Events.Game
 {
+    [Event]
     public abstract class GameInfo
     {
         public Guid Id { get; set; }

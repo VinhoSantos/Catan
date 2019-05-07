@@ -1,5 +1,8 @@
-﻿namespace Catan.Core.Events.Player
+﻿using Catan.Core.Extensions;
+
+namespace Catan.Core.Events.Player
 {
+    [Event]
     public abstract class PlayerInfo
     {
         public string Id { get; set; }

@@ -64,5 +64,14 @@ namespace Catan.Core.Helpers
 
             return dice1 + dice2;
         }
+
+        public static DevelopmentCard PopRandomDevelopmentCardFromList(List<DevelopmentCard> list)
+        {
+            var random = new Random().Next(list.Count);
+            var item = list.ElementAt(random);
+            list.RemoveAt(random);
+
+            return item;
+        }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Catan.Core.Extensions;
-using Catan.CodeGenerator.TsGenerator;
+﻿using Catan.CodeGenerator.TsGenerator;
+using Catan.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,17 +11,19 @@ namespace Catan.CodeGenerator
 {
     public class TypeScriptGenerator
     {
-        public static void GenerateContracts(string outputFile)
+        public static void Generate(string outputFile, bool events)
         {
-            var output = TsGenerator.TsGenerator.Generate(new CatanTsGeneratorSettings());
+            var output = TsGenerator.TsGenerator.Generate(new CatanTsGeneratorSettings { Events = events});
             File.WriteAllText(outputFile, output);
         }
 
         private class CatanTsGeneratorSettings : TsGeneratorSettings
         {
+            public bool Events { get; set; }
+
             public override IEnumerable<Type> GetTypes()
             {
-                var assembly = Assembly.Load("Catan.API");
+                var assembly = Assembly.Load("Catan.Core");
                 
                 Type[] types;
                 try
@@ -36,9 +38,11 @@ namespace Catan.CodeGenerator
                 return types.Where(t => t != null).Where(MapType);
             }
 
-            private static bool MapType(Type type)
+            private bool MapType(Type type)
             {
-                return type.GetCustomAttributes(typeof(CodeGeneratorAttribute), true).Length > 0;
+                return Events
+                    ? type.GetCustomAttributes(typeof(EventAttribute), true).Length > 0
+                    : type.GetCustomAttributes(typeof(ContractAttribute), true).Length > 0;
             }
 
             public override string GetModuleName(string @namespace)

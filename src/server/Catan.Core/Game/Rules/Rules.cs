@@ -14,7 +14,7 @@ namespace Catan.Core.Game
         public List<NumberRuleSet> NumberSets { get; set; }
         public List<PortRuleSet> Ports { get; set; }
         public List<ConstructionRuleSet> Constructions { get; set; }
-        public List<DevelopmentCardRuleSet> DevelopmentCards { get; set; }
+        public DevelopmentCardRuleSet DevelopmentCardRuleSet { get; set; }
         public List<EffectCardRuleSet> EffectCards { get; set; }
     }
 
@@ -237,11 +237,9 @@ namespace Catan.Core.Game
                 }
             };
 
-            DevelopmentCards = new List<DevelopmentCardRuleSet>
+            DevelopmentCardRuleSet = new DevelopmentCardRuleSet
             {
-                new DevelopmentCardRuleSet
-                {
-                    Cost = new List<ResourceRuleSet>
+                Cost = new List<ResourceRuleSet>
                     {
                         new ResourceRuleSet
                         {
@@ -259,7 +257,7 @@ namespace Catan.Core.Game
                             Amount = 1
                         }
                     },
-                    DevelopmentCards = new List<DevelopmentCardTypeRuleSet>
+                DevelopmentCards = new List<DevelopmentCardTypeRuleSet>
                     {
                         new DevelopmentCardTypeRuleSet
                         {
@@ -287,7 +285,6 @@ namespace Catan.Core.Game
                             Amount = 2
                         }
                     }
-                }
             };
 
             Validate();
