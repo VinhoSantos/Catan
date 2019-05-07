@@ -74,12 +74,11 @@ export default class RenderCanvas {
 
     public drawBoard() {       
         this.clearScreen();
-        this.drawFields();
         this.drawStreets();
         this.drawVillages();
         this.drawCities();
 
-        document.querySelector('#game-canvas').addEventListener('mousemove', (event: MouseEvent) => this.trackMouse(event));
+        //document.querySelector('#game-canvas').addEventListener('mousemove', (event: MouseEvent) => this.trackMouse(event));
     }  
 
     private trackMouse(event: MouseEvent): void {
@@ -117,32 +116,7 @@ export default class RenderCanvas {
             this.drawHiglightedHexagon(neighbor);
         });
         this.previousHex = hex;
-    }
-
-    private drawFields() {
-        //core
-        this.drawHexagon(new Hex(0, 0, 0), Color.dessert);
-        //inner ring
-        this.drawHexagon(new Hex(1, 0, -1), Color.wood);
-        this.drawHexagon(new Hex(0, 1, -1), Color.wool);
-        this.drawHexagon(new Hex(-1, 1, 0), Color.wheat);
-        this.drawHexagon(new Hex(-1, 0, 1), Color.wood);
-        this.drawHexagon(new Hex(0, -1, 1), Color.brick);
-        this.drawHexagon(new Hex(1, -1, 0), Color.wool);
-        //outer ring
-        this.drawHexagon(new Hex(2, 0, -2), Color.wheat);
-        this.drawHexagon(new Hex(1, 1, -2), Color.ore);
-        this.drawHexagon(new Hex(0, 2, -2), Color.wood);
-        this.drawHexagon(new Hex(-1, 2, -1), Color.brick);
-        this.drawHexagon(new Hex(-2, 2, 0), Color.wool);
-        this.drawHexagon(new Hex(-2, 1, 1), Color.wheat);
-        this.drawHexagon(new Hex(-2, 0, 2), Color.ore);
-        this.drawHexagon(new Hex(-1, -1, 2), Color.wood);
-        this.drawHexagon(new Hex(0, -2, 2), Color.brick);
-        this.drawHexagon(new Hex(1, -2, 1), Color.wool);
-        this.drawHexagon(new Hex(2, -2, 0), Color.wheat);
-        this.drawHexagon(new Hex(2, -1, -1), Color.ore);
-    }
+    }    
 
     private drawStreets(): void {
         this.drawStreetAtJoint(new Hex(0, 0, 0), new Hex(1, 0, -1), 0);

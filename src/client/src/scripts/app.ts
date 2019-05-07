@@ -1,6 +1,6 @@
 import '../css/main.scss';
 
-import Game from './game';
+import Game from './catan';
 
 class App {
     constructor(private readonly game: Game) {}

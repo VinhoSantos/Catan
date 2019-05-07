@@ -18,6 +18,5 @@ export default class Color {
     static readonly brick = '#dc5539';
     static readonly wool = '#6cf45a';
     static readonly wheat = '#fe5';
-    static readonly ore = '#bbb';
-    
+    static readonly ore = '#bbb';    
 }
